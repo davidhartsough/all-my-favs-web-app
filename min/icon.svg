@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<svg width="192" height="192"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="gradient" x1="0.85" y1="0.85" x2="0.15" y2="0.15">
+      <stop offset="0%" stop-color="#099"/>
+      <stop offset="50%" stop-color="#08c"/>
+      <stop offset="100%" stop-color="#0b50da"/>
+    </linearGradient>
+  </defs>
+  <circle cx="96" cy="96" fill="#121212" r="96" />
+  <polygon fill="#121212" points="12,96 36,72 36,36 72,36 96,12 120,36 156,36 156,72 180,96 156,120 156,156 120,156 96,180 72,156 36,156 36,120" />
+  <polygon fill="url(#gradient)" opacity="0.25" points="12,96 36,72 36,36 72,36 96,12 120,36 156,36 156,72 180,96 156,120 156,156 120,156 96,180 72,156 36,156 36,120" />
+  <circle cx="96" cy="96" fill="#000" opacity="0.1" r="42" />
+  <circle cx="96" cy="96" fill="none" r="44" stroke="url(#gradient)" stroke-width="4" opacity="0.2" />
+  <g fill="url(#gradient)">
+    <path d="M 12 96 L 36 72 L 36 36 L 72 36 L 96 12 L 120 36 L 156 36 L 156 72 L 180 96 L 156 120 L 156 156 L 120 156 L 96 180 L 72 156 L 36 156 L 36 120 Z M 48 76 L 28 96 L 48 116 L 48 144 L 76 144 L 96 164 L 116 144 L 144 144 L 144 116 L 164 96 L 144 76 L 144 48 L 116 48 L 96 28 L 76 48 L 48 48 Z" />
+    <polygon points="96,56 103,79 117,75 113,89 136,96 113,103 117,117 103,113 96,136 89,113 75,117 79,103 56,96 79,89 75,75 89,79 96,56" />
+  </g>
+</svg>

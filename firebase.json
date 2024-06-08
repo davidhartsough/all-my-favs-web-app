@@ -1,0 +1,22 @@
+{
+  "hosting": {
+    "public": "min",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "ignore": ["**/.*"],
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/edit",
+        "destination": "/edit.html"
+      },
+      {
+        "source": "/*",
+        "function": "profile"
+      }
+    ]
+  }
+}

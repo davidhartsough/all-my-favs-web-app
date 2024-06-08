@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All My Favs</title>
+    <meta
+      name="description"
+      content="Your profile. Your favs. All in one place. Share your lists of your favorites."
+    />
+    <meta
+      name="keywords"
+      content="all,my,favs,faves,favorites,favourites,favorite,list,lists"
+    />
+    <meta name="author" content="David Hartsough" />
+    <meta name="application-name" content="All My Favs" />
+    <meta name="theme-color" content="#066cd3" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="All My Favs" />
+    <meta
+      property="og:description"
+      content="Your profile. Your favs. All in one place. Share your lists of your favorites."
+    />
+    <meta property="og:url" content="https://all-my-favs.web.app" />
+    <meta property="og:site_name" content="All My Favs" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="/icon512.png" />
+    <meta property="og:image:alt" content="All My Favs logo icon" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="All My Favs" />
+    <meta
+      name="twitter:description"
+      content="Your profile. Your favs. All in one place. Share your lists of your favorites."
+    />
+    <meta name="twitter:image" content="/icon512.png" />
+    <meta name="twitter:image:alt" content="All My Favs logo icon" />
+    <meta name="twitter:image:type" content="image/png" />
+    <meta name="twitter:image:width" content="512" />
+    <meta name="twitter:image:height" content="512" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/icon16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="/icon32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/icon192.png" type="image/png" sizes="192x192" />
+    <link
+      rel="apple-touch-icon"
+      href="/apple-icon.png"
+      type="image/png"
+      sizes="180x180"
+    />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#066cd3" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./base.css" />
+    <link rel="stylesheet" href="./form.css" />
+    <link rel="stylesheet" href="./home.css" />
+  </head>
+  <body>
+    <header>
+      <svg
+        width="192"
+        height="192"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        viewBox="0 0 192 192"
+        id="logo-icon"
+      >
+        <defs>
+          <linearGradient id="gradient" x1="0.85" y1="0.85" x2="0.15" y2="0.15">
+            <stop offset="0%" stop-color="#099" />
+            <stop offset="50%" stop-color="#08c" />
+            <stop offset="100%" stop-color="#0b50da" />
+          </linearGradient>
+        </defs>
+        <circle cx="96" cy="96" fill="#121212" r="96" opacity="0.2" />
+        <polygon
+          fill="#121212"
+          opacity="0.5"
+          points="12,96 36,72 36,36 72,36 96,12 120,36 156,36 156,72 180,96 156,120 156,156 120,156 96,180 72,156 36,156 36,120"
+        />
+        <polygon
+          fill="url(#gradient)"
+          opacity="0.25"
+          points="12,96 36,72 36,36 72,36 96,12 120,36 156,36 156,72 180,96 156,120 156,156 120,156 96,180 72,156 36,156 36,120"
+        />
+        <circle cx="96" cy="96" fill="#000" opacity="0.1" r="42" />
+        <circle
+          cx="96"
+          cy="96"
+          fill="none"
+          r="44"
+          stroke="url(#gradient)"
+          stroke-width="4"
+          opacity="0.2"
+        />
+        <g fill="url(#gradient)">
+          <path
+            d="M 12 96 L 36 72 L 36 36 L 72 36 L 96 12 L 120 36 L 156 36 L 156 72 L 180 96 L 156 120 L 156 156 L 120 156 L 96 180 L 72 156 L 36 156 L 36 120 Z M 48 76 L 28 96 L 48 116 L 48 144 L 76 144 L 96 164 L 116 144 L 144 144 L 144 116 L 164 96 L 144 76 L 144 48 L 116 48 L 96 28 L 76 48 L 48 48 Z"
+          />
+          <polygon
+            points="96,56 103,79 117,75 113,89 136,96 113,103 117,117 103,113 96,136 89,113 75,117 79,103 56,96 79,89 75,75 89,79 96,56"
+          />
+        </g>
+      </svg>
+      <h1>All My Favs</h1>
+    </header>
+    <main id="app">
+      <div id="loader">
+        <img src="/icon.svg" alt="All My Favs logo icon" />
+        <div class="spinner"></div>
+      </div>
+    </main>
+    <template id="account-template">
+      <section class="account">
+        <h2>
+          <span id="hi">Hello,</span>
+          <span id="name"></span>
+        </h2>
+        <div class="row">
+          <div class="col">
+            <h3>Your Profile</h3>
+          </div>
+          <div class="col">
+            <div>
+              <a id="profile-link" href="#" class="btn">View</a>
+              <a href="/edit" class="btn">Edit</a>
+              <button id="share" class="btn">Share</button>
+            </div>
+          </div>
+        </div>
+        <div class="separator"><div class="line"></div></div>
+        <button id="sign-out" class="text-btn">Sign Out</button>
+      </section>
+    </template>
+    <template id="auth-template">
+      <section class="sign-in">
+        <h2>Sign In</h2>
+        <p class="small">(or sign up)</p>
+        <div id="google-sign-in"></div>
+        <div class="separator">
+          <div class="line"></div>
+          <p class="or">OR</p>
+        </div>
+        <div id="email-sign-in">
+          <form>
+            <fieldset>
+              <label for="email">
+                <p>
+                  Enter your email, and we'll send you a link to sign in.
+                  <br />
+                  <span class="small">(No password needed.)</span>
+                </p>
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                autocomplete="email"
+                required
+                maxlength="128"
+                placeholder="email@example.com"
+                pattern='^([^<>\(\)\[\]\\.,;:\s@"]{1,63})@((((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-))+\.)+([a-zA-Z]{2,63}))$'
+                title="Enter a valid email"
+              />
+              <button type="submit" id="continue-btn" class="btn">
+                Continue
+              </button>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+    </template>
+    <template id="email-sent">
+      <section class="sign-in">
+        <h2>Sent!</h2>
+        <p>We've sent you a email with a link to sign.</p>
+        <p>
+          Go to your inbox and look for an email from: <br />
+          <span class="noreply">noreply@all-my-favs.firebaseapp.com</span>
+        </p>
+        <p>Then click the link to "Sign in to All My Favs"</p>
+        <p class="small">(No password needed.)</p>
+      </section>
+    </template>
+    <template id="creator-template">
+      <section class="create">
+        <h2>Create Your Profile</h2>
+        <form>
+          <fieldset>
+            <label for="name">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Your Name"
+              maxlength="80"
+              autocomplete="name"
+              autofocus
+              minlength="2"
+              required
+              title="Enter a valid name"
+              pattern="^[\p{L}\p{N}\p{P} ]+$"
+            />
+            <div class="separator"><div class="line"></div></div>
+            <label for="username">
+              <p>Username</p>
+              <p class="small">
+                Your username is used for your public profile's URL.
+              </p>
+            </label>
+            <div id="url-input-group">
+              <div id="input-addon"><span>all-my-favs.web.app/</span></div>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="your-username"
+                maxlength="80"
+                autocomplete="username"
+                spellcheck="false"
+                required
+                title="Enter a valid username"
+                pattern="^[a-z\-0-9]+$"
+              />
+            </div>
+            <p class="notice">
+              <strong>NOTE:</strong> Once you pick a username, you cannot change
+              it.
+            </p>
+            <p id="try-again" class="hide">
+              Sorry, the username "<span id="username-taken"></span>" is taken.
+            </p>
+            <div id="loading" class="hide"><div class="spinner"></div></div>
+            <button type="submit" id="create-btn" class="btn">Create</button>
+          </fieldset>
+        </form>
+      </section>
+    </template>
+    <script src="./home.js"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "all-my-favs-web-app",
+  "version": "0.1.0",
+  "description": "All My Favs: the web app",
+  "main": "index.js",
+  "scripts": {
+    "copy:assets": "cp assets/* min",
+    "min:html": "html-minifier-terser --input-dir src --output-dir min --case-sensitive --collapse-whitespace --keep-closing-slash --conservative-collapse --remove-comments --file-ext html",
+    "min:css": "lightningcss --minify src/*.css --output-dir min",
+    "build:home": "esbuild ts/home.ts --bundle --minify --sourcemap --outfile=min/home.js",
+    "build:edit": "esbuild ts/edit.ts --bundle --minify --sourcemap --outfile=min/edit.js",
+    "prebuild": "mkdir -p min",
+    "build": "npm run copy:assets && npm run min:html && npm run min:css",
+    "serve": "npx serve min",
+    "preview": "npx serve min",
+    "dev": "npx serve src",
+    "deploy": "firebase deploy --only hosting"
+  },
+  "author": "davidhartsough",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@types/sortablejs": "^1.15.8",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "globals": "^15.1.0",
+    "html-minifier-terser": "^7.2.0",
+    "lightningcss": "^1.24.1",
+    "lightningcss-cli": "^1.24.1",
+    "prettier": "^3.2.5",
+    "serve": "^14.2.3",
+    "stylelint": "^16.5.0",
+    "stylelint-config-standard": "^36.0.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
+  },
+  "dependencies": {
+    "firebase": "^10.11.1",
+    "sortablejs": "^1.15.2"
+  }
+}

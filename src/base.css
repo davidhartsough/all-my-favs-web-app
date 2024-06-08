@@ -1,0 +1,75 @@
+:root {
+  --font-family: ui-sans-serif, system-ui, -apple-system, "BlinkMacSystemFont",
+    "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bg: #121212;
+  --fg: #fafafa;
+  --hs: 205deg 100%;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg);
+  font-family: var(--font-family);
+  line-height: 1.5;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: inherit;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+header {
+  text-align: center;
+  background: radial-gradient(
+      circle 16rem at center,
+      hsl(0deg 0% 0% / 8%) 75%,
+      transparent 80%,
+      hsl(0deg 0% 0% / 3%) 85%
+    ),
+    linear-gradient(
+      275deg in hsl,
+      hsl(180deg 100% 30%),
+      hsl(200deg 100% 40%),
+      hsl(220deg 90% 45%)
+    );
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logo-icon {
+  position: absolute;
+  opacity: 0.2;
+  display: block;
+  margin: auto;
+  z-index: 0;
+  width: 25rem;
+  height: auto;
+  filter: blur(2px);
+}
+
+h1 {
+  font-optical-sizing: auto;
+  font-style: normal;
+  position: relative;
+  z-index: 1;
+  line-height: 1.15;
+  text-shadow: 0 0 0.5rem hsl(0deg 0% 0% / 70%);
+}
