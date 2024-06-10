@@ -15,7 +15,6 @@ function renderCreator(
   displayName: string | null,
   usernameSuggestion: string
 ) {
-  console.log("render creator");
   const template = getTemplate("creator-template");
   const nameInput = template.querySelector("#name") as HTMLInputElement;
   const usernameInput = template.querySelector("#username") as HTMLInputElement;
@@ -63,10 +62,26 @@ function renderCreator(
   renderNewComp(template);
 }
 
+const greetings = [
+  "Hello",
+  "Hi",
+  "Hey",
+  "Hi there",
+  "What's up",
+  "Hey there",
+  "What's good",
+  "Yo",
+];
+function updateGreetingIndex(nextIndex: number) {
+  const newIndex = nextIndex >= greetings.length ? 0 : nextIndex;
+  window.localStorage.setItem("greetingIndex", `${newIndex}`);
+}
+
 function renderAccountDetails(name: string, username: string) {
-  console.log("render account details");
   const template = getTemplate("account-template");
-  template.querySelector("#hi")!.textContent = "Hello,";
+  const greetingIndex = Number(window.localStorage.getItem("greetingIndex"));
+  template.querySelector("#hi")!.textContent = `${greetings[greetingIndex]},`;
+  updateGreetingIndex(greetingIndex + 1);
   template.querySelector("#name")!.textContent = name;
   (template.querySelector("#profile-link") as HTMLAnchorElement).href =
     `/${username}`;
@@ -94,7 +109,6 @@ function renderEmailNotice() {
 }
 
 function renderSignIn() {
-  console.log("render sign in");
   const template = getTemplate("auth-template");
   const emailPattern =
     /^([^<>()[\]\\.,;:\s@"]{1,63})@((((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-))+\.)+([a-zA-Z]{2,63}))$/;
@@ -138,7 +152,6 @@ function getUsernameSuggestion(name: string | null, email: string) {
 }
 
 initAuth((user) => {
-  console.log("user from auth callback:", user);
   if (user) {
     const { uid, displayName, email, id, name } = user;
     if (id && name) {
@@ -157,7 +170,6 @@ initAuth((user) => {
 
 // Google Sign In
 function handleCredentialResponse(response: { credential: string }) {
-  console.log("Google Sign In");
   renderLoader();
   // Encoded JWT ID token: response.credential
   const idToken = response.credential;

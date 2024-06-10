@@ -66,7 +66,6 @@ async function checkUrlForEmailLink(cb: AuthCallback) {
   // ENTRY POINT #4
   // Confirm the link is a sign-in with email link.
   if (isSignInWithEmailLink(auth, window.location.href)) {
-    console.log("Email link sign in");
     renderLoader();
     // Get the email if available. This should be available if the user completes
     // the flow on the same device where they started it.

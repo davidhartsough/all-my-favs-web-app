@@ -8,6 +8,8 @@ import {
   getDocs,
   setDoc,
   addDoc,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore/lite";
 import app from "./fire";
 import { isValidStr } from "./utils";
@@ -114,4 +116,24 @@ export async function createNewList(
   return { id: docRef.id, ...newList };
 }
 
-// https://firebase.google.com/docs/firestore/manage-data/add-data?hl=en&authuser=0
+export async function updateList(
+  id: string,
+  title: string,
+  items: string[],
+  numbered: boolean
+) {
+  const docRef = doc(db, "lists", id);
+  await updateDoc(docRef, { title, items, numbered });
+}
+
+export async function reorderLists(newSortOrder: string[]) {
+  await Promise.all(
+    newSortOrder.map((id, index) =>
+      updateDoc(doc(db, "lists", id), { order: index + 1 })
+    )
+  );
+}
+
+export async function deleteList(id: string) {
+  await deleteDoc(doc(db, "lists", id));
+}

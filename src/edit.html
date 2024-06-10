@@ -95,6 +95,7 @@
       </div>
     </main>
     <footer id="footer" class="hide">
+      <div class="hr-line"></div>
       <div id="new-btn-container">
         <button id="new-btn" class="btn">Create New List</button>
       </div>
@@ -131,10 +132,9 @@
           </div>
           <p class="small">
             Make a "Numbered" list for definitive rankings (1<sup>st</sup>,
-            2<sup>nd</sup>, 3<sup>rd</sup>, etc).
-            <!-- <br /> -->
-            Otherwise, the list will just be displayed with dots (•) for each
-            item (insinuating that the list isn't in an exact rank order).
+            2<sup>nd</sup>, 3<sup>rd</sup>, etc). Otherwise, the list will
+            display without numbers, insinuating that the list isn't in an exact
+            rank order.
           </p>
           <div id="list-item-inputs">
             <input
@@ -147,7 +147,9 @@
               required
             />
           </div>
-          <button type="submit" id="new-list-btn" class="btn">Save</button>
+          <button type="submit" id="new-list-btn" class="btn save-btn">
+            Save
+          </button>
         </fieldset>
         <div id="form-overlay" class="hide"></div>
       </form>
@@ -201,6 +203,125 @@
             </svg>
           </div>
         </div>
+      </div>
+    </template>
+    <template id="list-template">
+      <div class="list">
+        <section class="show">
+          <div class="list-header">
+            <h3 tabindex="1" class="list-title"></h3>
+            <div class="list-actions">
+              <div class="action-btn edit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-pencil"
+                >
+                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                  <path d="m15 5 4 4" />
+                </svg>
+              </div>
+              <div class="action-btn list-move">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-grip-vertical"
+                >
+                  <circle cx="9" cy="12" r="1" />
+                  <circle cx="9" cy="5" r="1" />
+                  <circle cx="9" cy="19" r="1" />
+                  <circle cx="15" cy="12" r="1" />
+                  <circle cx="15" cy="5" r="1" />
+                  <circle cx="15" cy="19" r="1" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="list-items"></div>
+        </section>
+        <form class="hide">
+          <fieldset>
+            <div class="list-form-header">
+              <h4>Edit Your List</h4>
+              <div class="close">
+                <div class="close-btn action-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-x"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" class="hidden-id-input" />
+            <label for="list-title" class="list-title-label">List Title</label>
+            <input
+              type="text"
+              name="title"
+              id="list-title"
+              placeholder="What is this a list of?"
+              maxlength="80"
+              title="Enter a valid title"
+              autocomplete="off"
+              required
+            />
+            <div class="checkbox">
+              <input type="checkbox" name="numbered" id="numbered" />
+              <label for="numbered" class="checkbox-label">Numbered</label>
+            </div>
+            <p class="small">
+              Make a "Numbered" list for definitive rankings (1<sup>st</sup>,
+              2<sup>nd</sup>, 3<sup>rd</sup>, etc).
+            </p>
+            <div class="list-item-inputs"></div>
+            <div class="edit-form-btns">
+              <button type="button" class="btn delete open-delete-modal">
+                Delete
+              </button>
+              <button type="submit" class="btn save-btn">Save</button>
+            </div>
+          </fieldset>
+          <div class="form-overlay hide"></div>
+          <div class="delete-modal hide">
+            <div class="confirm">
+              <p class="warning">Are you sure you want to delete this list?</p>
+              <div class="edit-form-btns">
+                <button type="button" class="btn cancel">
+                  <span class="extra">No, </span>
+                  Cancel
+                </button>
+                <button type="button" class="btn delete confirm-delete">
+                  <span class="extra">Yes, </span>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </template>
     <script src="./edit.js"></script>

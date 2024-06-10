@@ -64,7 +64,7 @@ h1 {
 }
 
 main {
-  padding: 0 1rem;
+  padding: 1rem;
 }
 
 #loading {
@@ -81,7 +81,15 @@ h2 {
 }
 
 footer {
-  margin: 2rem 0 3.5rem;
+  padding: 0 0 3.5rem;
+}
+
+.hr-line {
+  height: 1px;
+  max-width: 50rem;
+  margin: 2rem auto 3rem;
+  background-color: hsl(205deg 10% 70% / 40%);
+  border-radius: 1rem;
 }
 
 #new-btn {
@@ -156,16 +164,18 @@ input[type="checkbox"] {
     overflow: hidden;
     box-shadow: 0 0 0.25rem 0.125rem hsl(0deg 0% 0% / 10%);
     background-color: #1a1a1a;
-    margin: 1rem auto;
+    margin: auto;
   }
 }
 
-#form-overlay {
+#form-overlay,
+.form-overlay,
+.delete-modal {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  background-color: #2229;
+  background-color: #111a;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,7 +191,8 @@ input[type="checkbox"] {
   flex: 1 1 auto;
 }
 
-.actions {
+.actions,
+.list-actions {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -205,17 +216,15 @@ input[type="checkbox"] {
   align-items: center;
   opacity: 0.6;
   background-color: #1111;
+  cursor: pointer;
   transition:
     background-color 0.2s,
     opacity 0.2s;
 }
 
-.move {
+.move,
+.list-move {
   cursor: move;
-}
-
-.remove {
-  cursor: pointer;
 }
 
 .action-btn:hover,
@@ -224,9 +233,14 @@ input[type="checkbox"] {
   opacity: 1;
 }
 
-section {
+.list {
+  padding: 0.5rem 0;
+}
+
+section,
+.list form {
   max-width: 50rem;
-  margin: 2.5rem auto;
+  margin: 0 auto;
   border: 0.5px solid hsl(0deg 0% 75% / 4%);
   border-radius: 0.25rem;
   overflow: hidden;
@@ -238,12 +252,29 @@ section {
     box-shadow 0.3s;
 }
 
-section:hover {
+.list form {
+  position: relative;
+  padding: 1.125rem;
+}
+
+section:hover,
+.list form {
   box-shadow: 0 0 0.375rem 0.25rem hsl(0deg 0% 0% / 3%);
   background-color: hsl(0deg 0% 90% / 4%);
 }
 
+.list-header,
+.list-form-header {
+  display: flex;
+  align-items: center;
+}
+
+.list-form-header {
+  margin-bottom: 0.5rem;
+}
+
 h3 {
+  flex: 1 1 100%;
   background-color: hsl(0deg 0% 0% / 3%);
   padding: 1rem 1.25rem 1rem 1rem;
   font-size: 1.25rem;
@@ -252,22 +283,115 @@ h3 {
   letter-spacing: 0.025rem;
 }
 
+section:hover .list-actions,
+section:focus .list-actions {
+  width: 5.5rem;
+}
+
+@media (width < 40rem) {
+  .list-actions {
+    width: 5.5rem;
+  }
+}
+
+h4 {
+  font-size: 1.375rem;
+  font-weight: 300;
+  line-height: 1;
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-form-btns {
+  display: flex;
+  align-items: center;
+}
+
+.delete {
+  color: hsl(4deg 100% 95%);
+  border-color: hsl(4deg 50% 75% / 75%);
+  background-color: hsl(4deg 50% 30% / 20%);
+}
+
+.delete:hover {
+  border-color: hsl(4deg 50% 75% / 90%);
+  background-color: hsl(4deg 50% 40% / 20%);
+}
+
+.delete:focus {
+  border-color: hsl(4deg 50% 75% / 95%);
+  background-color: hsl(4deg 50% 30% / 15%);
+}
+
+.cancel {
+  border-color: hsl(205deg 25% 75% / 75%);
+  background-color: hsl(205deg 50% 30% / 20%);
+}
+
+.cancel:hover {
+  border-color: hsl(205deg 25% 75% / 90%);
+  background-color: hsl(205deg 50% 40% / 20%);
+}
+
+.cancel:focus {
+  border-color: hsl(205deg 25% 75% / 95%);
+  background-color: hsl(205deg 50% 30% / 15%);
+}
+
+.save-btn {
+  min-width: 6rem;
+}
+
+.confirm {
+  max-width: 20rem;
+  margin: 0 auto;
+  border: 1px solid #ccc5;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  box-shadow: 0 0 0.25rem 0.125rem hsl(0deg 0% 0% / 4%);
+  padding: 1rem;
+  background-color: #141414;
+}
+
+.extra {
+  padding-right: 0.125rem;
+}
+
+@media (width < 30rem) {
+  .extra {
+    display: none;
+  }
+}
+
+.warning {
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: hsl(4deg 100% 98%);
+  padding: 0 0.5rem;
+}
+
 ul,
 ol {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.5rem;
   list-style-image: none;
 }
 
 li {
   margin-bottom: 0;
-  padding: 1rem 0;
+  padding: 0;
   border-top: 0.5px solid #7771;
 }
 
 ol li,
 ul li {
-  padding: 1rem;
+  padding: 0.25rem 1rem;
 }
 
 ul {

@@ -11,6 +11,7 @@
     "build:edit": "esbuild ts/edit.ts --bundle --minify --sourcemap --outfile=min/edit.js",
     "prebuild": "mkdir -p min",
     "build": "npm run copy:assets && npm run min:html && npm run min:css",
+    "rebuild": "npm run min:html && npm run min:css",
     "serve": "npx serve min",
     "preview": "npx serve min",
     "dev": "npx serve src",
