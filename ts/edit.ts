@@ -380,20 +380,19 @@ async function renderEditor(uid: string, username: string, name: string) {
     const order = totalCount + 1;
     formOverlay.className = "show";
     formOverlay.innerHTML = loaderHTML;
-    // save/create new list
     turnOnSafety();
     createNewList(uid, username, title, items, numbered, order).then(
       (newList) => {
         turnOffSafety();
         addList(newList);
         totalCount += 1;
-        // reset form
         newListForm.className = "hide";
         newBtnContainer.className = "show";
         formHeading.innerText = "Create a new list";
         (getEl("new-list-title") as HTMLInputElement).value = "";
-        firstInputItem.value = "";
         liInputsDiv.innerHTML = `<input type="text" name="item" id="first-item" maxlength="80" placeholder="Your first item on the list" autocomplete="off" required />`;
+        const firstInputItem = getEl("first-item") as HTMLInputElement;
+        firstInputItem.addEventListener("input", watchInput);
         formOverlay.className = "hide";
         formOverlay.innerHTML = "";
       }
