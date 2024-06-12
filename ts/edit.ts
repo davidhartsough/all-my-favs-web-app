@@ -113,6 +113,25 @@ function addList({ id, title, items, numbered }: List) {
     });
     liInputs.appendChild(nextItem);
   });
+  listTitleInput.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter" || ev.key === "Tab") {
+      ev.preventDefault();
+      (
+        liInputs.firstElementChild!.firstElementChild as HTMLInputElement
+      ).focus();
+    }
+  });
+  liInputs.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      const inputs = Array.from(liInputs.querySelectorAll("input"));
+      const index = inputs.indexOf(ev.target as HTMLInputElement);
+      const nextUp = inputs[index + 1];
+      if (index !== -1 && nextUp) {
+        nextUp.focus();
+      }
+    }
+  });
   function watchInput(ev: Event) {
     addNewItem();
     ev.target?.removeEventListener("input", watchInput);
@@ -367,6 +386,24 @@ async function renderEditor(uid: string, username: string, name: string) {
     handle: ".move",
     direction: "vertical",
   });
+  const newListTitleInput = getEl("new-list-title") as HTMLInputElement;
+  newListTitleInput.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter" || ev.key === "Tab") {
+      ev.preventDefault();
+      firstInputItem.focus();
+    }
+  });
+  liInputsDiv.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      const inputs = Array.from(liInputsDiv.querySelectorAll("input"));
+      const index = inputs.indexOf(ev.target as HTMLInputElement);
+      const nextUp = inputs[index + 1];
+      if (index !== -1 && nextUp) {
+        nextUp.focus();
+      }
+    }
+  });
   const formOverlay = getEl("form-overlay") as HTMLDivElement;
   newListForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -389,8 +426,8 @@ async function renderEditor(uid: string, username: string, name: string) {
         newListForm.className = "hide";
         newBtnContainer.className = "show";
         formHeading.innerText = "Create a new list";
-        (getEl("new-list-title") as HTMLInputElement).value = "";
-        liInputsDiv.innerHTML = `<input type="text" name="item" id="first-item" maxlength="80" placeholder="Your first item on the list" autocomplete="off" required />`;
+        newListTitleInput.value = "";
+        liInputsDiv.innerHTML = `<input type="text" name="item" id="first-item" maxlength="144" placeholder="Your first item on the list" autocomplete="off" required />`;
         const firstInputItem = getEl("first-item") as HTMLInputElement;
         firstInputItem.addEventListener("input", watchInput);
         formOverlay.className = "hide";
