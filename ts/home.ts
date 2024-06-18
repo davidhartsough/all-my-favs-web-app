@@ -111,7 +111,7 @@ function renderEmailNotice() {
 function renderSignIn() {
   const template = getTemplate("auth-template");
   const emailPattern =
-    /^([^<>()[\]\\.,;:\s@"]{1,63})@((((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-))+\.)+([a-zA-Z]{2,63}))$/;
+    /^[\p{L}\p{N}]((?!.*?\.\.)(?!.*?--)(?!.*-\.)(?!.*\.-)[\p{L}\p{N}_.-]{0,63}(?<![.-]))@[\p{L}\p{N}]((?!.*?--)[\p{L}\p{N}-]{0,63}(?<!-))\.[a-zA-Z]{2,64}$/u;
   template.querySelector("form")!.addEventListener("submit", (e) => {
     e.preventDefault();
     const emailInput = getEl("email") as HTMLInputElement;

@@ -167,7 +167,7 @@
                 required
                 maxlength="128"
                 placeholder="email@example.com"
-                pattern='^([^<>\(\)\[\]\\.,;:\s@"]{1,63})@((((?!-)(?!.*--)[a-zA-Z\-0-9]{1,63}(?<!-))+\.)+([a-zA-Z]{2,63}))$'
+                pattern="^[\p{L}\p{N}]([\p{L}\p{N}_\.\-]{0,63})@[\p{L}\p{N}]([\p{L}\p{N}\-]{0,63})\.[a-zA-Z]{2,64}$"
                 title="Enter a valid email"
               />
               <button type="submit" id="continue-btn" class="btn">
