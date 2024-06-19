@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAIWGet-1MsYEFUS04zuyKe2yQedb5EeQw",
-  authDomain: "all-my-favs.firebaseapp.com",
+  authDomain: "all-my-favs.web.app",
   projectId: "all-my-favs",
   storageBucket: "all-my-favs.appspot.com",
   messagingSenderId: "681035335387",

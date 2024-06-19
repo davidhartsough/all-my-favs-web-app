@@ -108,6 +108,56 @@ function renderEmailNotice() {
   renderNewComp(template);
 }
 
+function isEmbeddedBrowser() {
+  const popupCheck = (() => {
+    const popup = window.open("", "_blank", "width=100,height=100");
+    if (!popup || popup.closed || typeof popup.closed === "undefined") {
+      return true;
+    }
+    popup.close();
+    return false;
+  })();
+  const storageCheck = (() => {
+    try {
+      localStorage.setItem("test", "test");
+      localStorage.removeItem("test");
+      return false;
+    } catch {
+      return true;
+    }
+  })();
+  const noReferrer = document.referrer === "";
+  const touchEvents = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const windowSizeCheck = window.innerWidth < 600 || window.innerHeight < 600;
+  const orientation =
+    "orientation" in window || "onorientationchange" in window;
+  const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
+  return (
+    popupCheck ||
+    storageCheck ||
+    noReferrer ||
+    (touchEvents && windowSizeCheck) ||
+    orientation ||
+    isMobileDevice
+  );
+}
+
+function getGoogleSignInHTML() {
+  const uxMode = isEmbeddedBrowser() ? "redirect" : "popup";
+  return `<div id="g_id_onload" data-client_id="681035335387-9o307lchkifkasf9jvsf91aug6htb23h.apps.googleusercontent.com" data-context="signin" data-ux_mode="${uxMode}" data-login_uri="https://all-my-favs.web.app/__/auth/handler" data-callback="handleGoogleCredentialResponse" data-auto_select="true" data-itp_support="true"></div>
+  <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="left"></div>`;
+}
+
+function renderGoogleSignIn() {
+  const googleSignInHTML = getGoogleSignInHTML();
+  (getEl("google-sign-in") as HTMLDivElement).innerHTML = googleSignInHTML;
+  // <script src="https://accounts.google.com/gsi/client" async></script>
+  const script = document.createElement("script");
+  script.src = "https://accounts.google.com/gsi/client";
+  script.async = true;
+  document.body.appendChild(script);
+}
+
 function renderSignIn() {
   const template = getTemplate("auth-template");
   const emailPattern =
@@ -137,14 +187,7 @@ function renderSignIn() {
     return false;
   });
   renderNewComp(template);
-  (getEl("google-sign-in") as HTMLDivElement).innerHTML =
-    `<div id="g_id_onload" data-client_id="681035335387-9o307lchkifkasf9jvsf91aug6htb23h.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_select="true" data-itp_support="true"></div>
-  <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="left"></div>`;
-  // <script src="https://accounts.google.com/gsi/client" async></script>
-  const script = document.createElement("script");
-  script.src = "https://accounts.google.com/gsi/client";
-  script.async = true;
-  document.body.appendChild(script);
+  renderGoogleSignIn();
 }
 
 function getUsernameSuggestion(name: string | null, email: string) {
