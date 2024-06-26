@@ -29,8 +29,10 @@ function storeUserData(uid: string, username: string, name: string) {
 
 function getStoredUserData(uid: string) {
   const storedData = window.localStorage.getItem(uid);
-  if (storedData) {
+  if (storedData && storedData.length > 1) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const storedUserData = JSON.parse(storedData);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { id, name } = storedUserData;
     if (isValidStr(id) && isValidStr(name)) {
       return { uid, name, id };

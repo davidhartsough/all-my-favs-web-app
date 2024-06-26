@@ -22,7 +22,7 @@ function renderCreator(
     nameInput.value = displayName;
   }
   usernameInput.value = usernameSuggestion;
-  const usernamePattern = /^[a-z0-9\-]+$/;
+  const usernamePattern = /^[a-z0-9-]+$/;
   (template.querySelector("form") as HTMLFormElement).addEventListener(
     "submit",
     (e) => {
@@ -45,17 +45,19 @@ function renderCreator(
       submitBtn.style.display = "none";
       const loader = getEl("loading") as HTMLDivElement;
       loader.className = "show";
-      isUsernameTaken(username).then((isTaken) => {
-        if (isTaken) {
-          getEl("username-taken")!.textContent = username;
-          getEl("try-again")!.className = "show";
-          loader.className = "hide";
-          submitBtn.style.display = "block";
-          return;
-        }
-        renderLoader();
-        createNewUser(uid, username, name);
-      });
+      isUsernameTaken(username)
+        .then((isTaken) => {
+          if (isTaken) {
+            getEl("username-taken")!.textContent = username;
+            getEl("try-again")!.className = "show";
+            loader.className = "hide";
+            submitBtn.style.display = "block";
+            return;
+          }
+          renderLoader();
+          createNewUser(uid, username, name).catch(console.warn);
+        })
+        .catch(console.warn);
       return false;
     }
   );
@@ -87,6 +89,7 @@ function renderAccountDetails(name: string, username: string) {
     `/${username}`;
   (template.querySelector("#sign-out") as HTMLButtonElement).addEventListener(
     "click",
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     logout
   );
   const shareBtn = template.querySelector("#share") as HTMLButtonElement;
@@ -96,6 +99,7 @@ function renderAccountDetails(name: string, username: string) {
     url: `https://all-my-favs.web.app/${username}`,
   };
   if (navigator && navigator.canShare && navigator.canShare(shareData)) {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     shareBtn.addEventListener("click", () => navigator.share(shareData));
   } else {
     shareBtn.style.display = "none";
@@ -109,48 +113,55 @@ function renderEmailNotice() {
 }
 
 function isEmbeddedBrowser() {
-  const popupCheck = (() => {
-    const popup = window.open("", "_blank", "width=100,height=100");
-    if (!popup || popup.closed || typeof popup.closed === "undefined") {
-      return true;
-    }
-    popup.close();
-    return false;
-  })();
-  const storageCheck = (() => {
-    try {
-      localStorage.setItem("test", "test");
-      localStorage.removeItem("test");
-      return false;
-    } catch {
-      return true;
-    }
-  })();
-  const noReferrer = document.referrer === "";
   const touchEvents = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   const windowSizeCheck = window.innerWidth < 600 || window.innerHeight < 600;
-  const orientation =
-    "orientation" in window || "onorientationchange" in window;
-  const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
+  const orientate = "orientation" in window || "onorientationchange" in window;
+  const ua = window.navigator.userAgent;
+  const isMobileDevice = /Mobi/i.test(ua);
+  const rules = ["WebView", "(iPhone|iPod|iPad)(?!.*Safari/)", "Android.*(wv)"];
+  const inAppRegex = new RegExp(`(${rules.join("|")})`, "ig");
+  const isInApp = Boolean(ua.match(inAppRegex));
+  const embeddedBrowsers = [
+    /\bFB[\w_]+\/(Messenger|MESSENGER)/,
+    /\bFB[\w_]+\//,
+    /\bTwitter/i,
+    /\bLine\//i,
+    /\bMicroMessenger\//i,
+    /\bPuffin/i,
+    /\bMiuiBrowser\//i,
+    /\bInstagram/i,
+  ];
+  const isEmbedded = embeddedBrowsers.some((regex) => regex.test(ua));
   return (
-    popupCheck ||
-    storageCheck ||
-    noReferrer ||
-    (touchEvents && windowSizeCheck) ||
-    orientation ||
-    isMobileDevice
+    touchEvents &&
+    windowSizeCheck &&
+    orientate &&
+    isMobileDevice &&
+    isInApp &&
+    isEmbedded
   );
 }
 
-function getGoogleSignInHTML() {
-  const uxMode = isEmbeddedBrowser() ? "redirect" : "popup";
-  return `<div id="g_id_onload" data-client_id="681035335387-9o307lchkifkasf9jvsf91aug6htb23h.apps.googleusercontent.com" data-context="signin" data-ux_mode="${uxMode}" data-login_uri="https://all-my-favs.web.app/__/auth/handler" data-callback="handleGoogleCredentialResponse" data-auto_select="true" data-itp_support="true"></div>
-  <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="left"></div>`;
+function guessAppBrowser() {
+  const ua = window.navigator.userAgent;
+  const browsers = [
+    { name: "Messenger", regex: /\bFB[\w_]+\/(Messenger|MESSENGER)/ },
+    { name: "Facebook", regex: /\bFB[\w_]+\// },
+    { name: "Twitter", regex: /\bTwitter/i },
+    { name: "Line", regex: /\bLine\//i },
+    { name: "WeChat", regex: /\bMicroMessenger\//i },
+    { name: "Puffin", regex: /\bPuffin/i },
+    { name: "Miui", regex: /\bMiuiBrowser\//i },
+    { name: "Instagram", regex: /\bInstagram/i },
+  ];
+  const inAppBrowser = browsers.find(({ regex }) => regex.test(ua));
+  return inAppBrowser ? inAppBrowser.name : "Messenger";
 }
 
 function renderGoogleSignIn() {
-  const googleSignInHTML = getGoogleSignInHTML();
-  (getEl("google-sign-in") as HTMLDivElement).innerHTML = googleSignInHTML;
+  (getEl("google-sign-in") as HTMLDivElement).innerHTML =
+    `<div id="g_id_onload" data-client_id="681035335387-9o307lchkifkasf9jvsf91aug6htb23h.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-login_uri="https://all-my-favs.web.app/__/auth/handler" data-callback="handleGoogleCredentialResponse" data-auto_select="true" data-itp_support="true"></div>
+    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="left"></div>`;
   // <script src="https://accounts.google.com/gsi/client" async></script>
   const script = document.createElement("script");
   script.src = "https://accounts.google.com/gsi/client";
@@ -159,6 +170,13 @@ function renderGoogleSignIn() {
 }
 
 function renderSignIn() {
+  if (isEmbeddedBrowser()) {
+    const temp = getTemplate("embedded-in-app");
+    const appGuess = guessAppBrowser();
+    (temp.querySelector("#app-guess") as HTMLSpanElement).innerText = appGuess;
+    renderNewComp(temp);
+    return;
+  }
   const template = getTemplate("auth-template");
   const emailPattern =
     /^[\p{L}\p{N}]((?!.*?\.\.)(?!.*?--)(?!.*-\.)(?!.*\.-)[\p{L}\p{N}_.-]{0,63}(?<![.-]))@[\p{L}\p{N}]((?!.*?--)[\p{L}\p{N}-]{0,63}(?<!-))\.[a-zA-Z]{2,64}$/u;
@@ -167,20 +185,22 @@ function renderSignIn() {
     const emailInput = getEl("email") as HTMLInputElement;
     const email = emailInput.value.trim();
     if (isValidStr(email) && emailPattern.test(email)) {
-      sendSignInLink(email).then((ok) => {
-        if (ok) {
-          renderEmailNotice();
-          return;
-        } else {
-          mainAppEl.innerHTML = `
+      sendSignInLink(email)
+        .then((ok) => {
+          if (ok) {
+            renderEmailNotice();
+            return;
+          } else {
+            mainAppEl.innerHTML = `
           <section class="sign-in">
             <h2>Bummer</h2>
             <p>Unfortunately we were unable to send you an email. Refresh and try again.</p>
           </section>
           `;
-          return;
-        }
-      });
+            return;
+          }
+        })
+        .catch(console.warn);
     } else {
       emailInput.focus();
     }
@@ -218,4 +238,5 @@ function handleCredentialResponse(response: { credential: string }) {
   const idToken = response.credential;
   handleGoogleSignIn(idToken);
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
 (window as any).handleGoogleCredentialResponse = handleCredentialResponse;

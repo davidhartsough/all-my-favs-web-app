@@ -1,0 +1,116 @@
+<!doctype html> <html lang="en"> <head> <meta charset="UTF-8"/> <meta name="viewport" content="width=device-width,initial-scale=1"/> <title>All My Favs</title> <meta http-equiv="refresh" content="10"/> <meta name="description" content="Your profile. Your favs. All in one place. Share your lists of your favorites."/> <meta name="keywords" content="all,my,favs,faves,favorites,favourites,favorite,list,lists"/> <meta name="author" content="David Hartsough"/> <meta name="application-name" content="All My Favs"/> <meta name="theme-color" content="#066cd3"/> <meta property="og:type" content="website"/> <meta property="og:title" content="All My Favs"/> <meta property="og:description" content="Your profile. Your favs. All in one place. Share your lists of your favorites."/> <meta property="og:url" content="https://all-my-favs.web.app/test"/> <meta property="og:site_name" content="All My Favs"/> <meta property="og:locale" content="en_US"/> <meta property="og:image" content="/icon512.png"/> <meta property="og:image:alt" content="All My Favs logo icon"/> <meta property="og:image:type" content="image/png"/> <meta property="og:image:width" content="512"/> <meta property="og:image:height" content="512"/> <meta name="twitter:card" content="summary"/> <meta name="twitter:title" content="All My Favs"/> <meta name="twitter:description" content="Your profile. Your favs. All in one place. Share your lists of your favorites."/> <meta name="twitter:image" content="/icon512.png"/> <meta name="twitter:image:alt" content="All My Favs logo icon"/> <meta name="twitter:image:type" content="image/png"/> <meta name="twitter:image:width" content="512"/> <meta name="twitter:image:height" content="512"/> <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any"/> <link rel="icon" href="/icon16.png" type="image/png" sizes="16x16"/> <link rel="icon" href="/icon32.png" type="image/png" sizes="32x32"/> <link rel="icon" href="/icon192.png" type="image/png" sizes="192x192"/> <link rel="apple-touch-icon" href="/apple-icon.png" type="image/png" sizes="180x180"/> <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#066cd3"/> <link rel="icon" href="/icon.svg" type="image/svg+xml"/> <link rel="manifest" href="/manifest.json"/> <link rel="stylesheet" href="./base.css"/> </head> <body> <main> <p id="testing"></p> <p id="user-agent"></p> <p id="browser"></p> <p id="is-embedded"></p> <p id="app-guess"></p> <button id="reload">reload</button> </main> <script> const getEl = (id) => document.getElementById(id);
+      function isEmbeddedBrowser() {
+        const touchEvents =
+          "ontouchstart" in window || navigator.maxTouchPoints > 0;
+        const windowSizeCheck =
+          window.innerWidth < 600 || window.innerHeight < 600;
+        const orientate =
+          "orientation" in window || "onorientationchange" in window;
+        const ua = window.navigator.userAgent;
+        const isMobileDevice = /Mobi/i.test(ua);
+        const rules = [
+          "WebView",
+          "(iPhone|iPod|iPad)(?!.*Safari/)",
+          "Android.*(wv)",
+        ];
+        const inAppRegex = new RegExp(`(${rules.join("|")})`, "ig");
+        const isInApp = Boolean(ua.match(inAppRegex));
+        const embeddedBrowsers = [
+          /\bFB[\w_]+\/(Messenger|MESSENGER)/,
+          /\bFB[\w_]+\//,
+          /\bTwitter/i,
+          /\bLine\//i,
+          /\bMicroMessenger\//i,
+          /\bPuffin/i,
+          /\bMiuiBrowser\//i,
+          /\bInstagram/i,
+        ];
+        const isEmbedded = embeddedBrowsers.some((regex) => regex.test(ua));
+        return (
+          touchEvents &&
+          windowSizeCheck &&
+          orientate &&
+          isMobileDevice &&
+          isInApp &&
+          isEmbedded
+        );
+      }
+      getEl("is-embedded").innerText = isEmbeddedBrowser() ? "true" : "false";
+
+      function guessAppBrowser() {
+        const ua = window.navigator.userAgent;
+        const browsers = [
+          { name: "Messenger", regex: /\bFB[\w_]+\/(Messenger|MESSENGER)/ },
+          { name: "Facebook", regex: /\bFB[\w_]+\// },
+          { name: "Twitter", regex: /\bTwitter/i },
+          { name: "Line", regex: /\bLine\//i },
+          { name: "WeChat", regex: /\bMicroMessenger\//i },
+          { name: "Puffin", regex: /\bPuffin/i },
+          { name: "Miui", regex: /\bMiuiBrowser\//i },
+          { name: "Instagram", regex: /\bInstagram/i },
+        ];
+        const inAppBrowser = browsers.find(({ regex }) => regex.test(ua));
+        return inAppBrowser ? inAppBrowser.name : "Messenger";
+      }
+      getEl("app-guess").innerText = guessAppBrowser();
+
+      if (isEmbeddedBrowser()) {
+        const appGuess = guessAppBrowser();
+        console.log(isEmbeddedBrowser());
+        console.log("appGuess:", appGuess);
+      }
+
+      let output = "";
+
+      const touchEvents =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      console.log("touchEvents:", touchEvents);
+      output += `touchEvents: ${touchEvents} && `;
+      const windowSizeCheck =
+        window.innerWidth < 600 || window.innerHeight < 600;
+      console.log("windowSizeCheck:", windowSizeCheck);
+      output += `windowSizeCheck: ${windowSizeCheck} && `;
+      const orientation =
+        "orientation" in window || "onorientationchange" in window;
+      console.log("orientation:", orientation);
+      output += `orientation: ${orientation} && `;
+      const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
+      console.log("isMobileDevice:", isMobileDevice);
+      output += `isMobileDevice: ${isMobileDevice}`;
+      getEl("testing").innerText = output;
+      console.log(output);
+
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      console.log("ua:", ua);
+      getEl("user-agent").innerText = ua;
+
+      let browserData = "";
+      const browsers = {
+        messenger: /\bFB[\w_]+\/(Messenger|MESSENGER)/,
+        facebook: /\bFB[\w_]+\//,
+        twitter: /\bTwitter/i,
+        line: /\bLine\//i,
+        wechat: /\bMicroMessenger\//i,
+        puffin: /\bPuffin/i,
+        miui: /\bMiuiBrowser\//i,
+        instagram: /\bInstagram/i,
+      };
+      Object.entries(browsers).forEach(([key, val]) => {
+        const isBrowser = val.test(ua);
+        console.log(key, ": ", isBrowser);
+        browserData += ` [ ${key}: ${isBrowser} ] | `;
+      });
+      const rules = [
+        "WebView",
+        "(iPhone|iPod|iPad)(?!.*Safari\/)",
+        "Android.*(wv)",
+      ];
+      const regex = new RegExp(`(${rules.join("|")})`, "ig");
+      const isInApp = Boolean(ua.match(regex));
+      console.log("isInApp:", isInApp);
+      browserData += ` [ isInApp: ${isInApp} ] `;
+      getEl("browser").innerText = browserData;
+
+      getEl("reload").addEventListener("click", () => {
+        window.location.reload();
+      }); </script> </body> </html> 

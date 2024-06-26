@@ -39,16 +39,18 @@ export function handleGoogleSignIn(idToken: string) {
   // Build Firebase credential with the Google ID token.
   const credential = GoogleAuthProvider.credential(idToken);
   // Sign in with credential from the Google user.
-  signInWithCredential(auth, credential).catch((error) => {
-    console.warn("Failed to sign in with Google");
-    console.warn({
-      code: error.code,
-      message: error.message,
-      error,
-    });
-    // The credential that was used.
-    // const credential = GoogleAuthProvider.credentialFromError(error);
-  });
+  signInWithCredential(auth, credential).catch(
+    (err: { code: string; message: string }) => {
+      console.warn("Failed to sign in with Google");
+      console.warn({
+        code: err.code,
+        message: err.message,
+        err,
+      });
+      // The credential that was used.
+      // const credential = GoogleAuthProvider.credentialFromError(error);
+    }
+  );
 }
 
 interface UserDoc {
@@ -114,23 +116,25 @@ export function authCallback(cb: AuthCallback) {
     if (user) {
       const { uid, displayName, email } = user;
       renderLoader();
-      getUserData(user.uid).then((userData) => {
-        if (userData) {
-          cb({
-            ...userData,
-            displayName,
-            email,
-          });
-        } else {
-          cb({
-            id: null,
-            name: null,
-            uid,
-            displayName,
-            email,
-          });
-        }
-      });
+      getUserData(user.uid)
+        .then((userData) => {
+          if (userData) {
+            cb({
+              ...userData,
+              displayName,
+              email,
+            });
+          } else {
+            cb({
+              id: null,
+              name: null,
+              uid,
+              displayName,
+              email,
+            });
+          }
+        })
+        .catch(console.warn);
     } else {
       cb(null);
     }
@@ -139,5 +143,5 @@ export function authCallback(cb: AuthCallback) {
 
 export function initAuth(cb: AuthCallback) {
   authCallback(cb);
-  checkUrlForEmailLink(cb);
+  checkUrlForEmailLink(cb).catch(console.warn);
 }

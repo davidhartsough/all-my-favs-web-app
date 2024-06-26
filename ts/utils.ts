@@ -7,8 +7,8 @@ export function renderLoader() {
   mainAppEl.innerHTML = loaderHTML;
 }
 
-export const isValidStr = (str: unknown) =>
-  str && typeof str === "string" && str.length > 1;
+export const isValidStr = (str: unknown): str is string =>
+  !!str && typeof str === "string" && str.length > 1;
 
 export const namePattern = /^[\p{L}\p{N}\p{P} ]+$/u;
 

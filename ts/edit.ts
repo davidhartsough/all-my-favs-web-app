@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import { authCallback } from "./auth";
 import {
   createNewList,
@@ -45,7 +46,7 @@ function turnOffSafety() {
 function reorderSort() {
   const ids = Array.from(mainAppEl.children).map(({ id }) => id);
   turnOnSafety();
-  reorderLists(ids).then(turnOffSafety);
+  reorderLists(ids).then(turnOffSafety).catch(console.warn);
   needToSave = false;
 }
 
@@ -203,13 +204,15 @@ function addList({ id, title, items, numbered }: List) {
     formOverlay.classList.add("show");
     formOverlay.innerHTML = loaderHTML;
     turnOnSafety();
-    deleteList(id).then(() => {
-      turnOffSafety();
-      const thisList = document.getElementById(id)!;
-      mainAppEl.removeChild(thisList);
-      totalCount -= 1;
-      saveNewSort();
-    });
+    deleteList(id)
+      .then(() => {
+        turnOffSafety();
+        const thisList = document.getElementById(id)!;
+        mainAppEl.removeChild(thisList);
+        totalCount -= 1;
+        saveNewSort();
+      })
+      .catch(console.warn);
   });
   editForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -230,20 +233,22 @@ function addList({ id, title, items, numbered }: List) {
     formOverlay.classList.add("show");
     formOverlay.innerHTML = loaderHTML;
     turnOnSafety();
-    updateList(id, title, items, numbered).then(() => {
-      turnOffSafety();
-      listTitleH3.innerText = title;
-      const o_u = numbered ? "o" : "u";
-      listDiv.innerHTML = `<${o_u}l><li>${items.join("</li><li>")}</li></${o_u}l>`;
-      editForm.classList.remove("show");
-      editForm.classList.add("hide");
-      section.classList.remove("hide");
-      section.classList.add("show");
-      formOverlay.classList.remove("show");
-      formOverlay.classList.add("hide");
-      formOverlay.innerHTML = "";
-      containerDiv.scrollIntoView();
-    });
+    updateList(id, title, items, numbered)
+      .then(() => {
+        turnOffSafety();
+        listTitleH3.innerText = title;
+        const o_u = numbered ? "o" : "u";
+        listDiv.innerHTML = `<${o_u}l><li>${items.join("</li><li>")}</li></${o_u}l>`;
+        editForm.classList.remove("show");
+        editForm.classList.add("hide");
+        section.classList.remove("hide");
+        section.classList.add("show");
+        formOverlay.classList.remove("show");
+        formOverlay.classList.add("hide");
+        formOverlay.innerHTML = "";
+        containerDiv.scrollIntoView();
+      })
+      .catch(console.warn);
     return false;
   });
   mainAppEl.appendChild(temp);
@@ -313,11 +318,13 @@ async function renderEditor(uid: string, username: string, name: string) {
       nameInput.readOnly = true;
       saveNameBtn.classList.add("hide");
       turnOnSafety();
-      editName(uid, username, newName).then(() => {
-        turnOffSafety();
-        nameFormLoader.className = "hide";
-        nameFormConfirmMsg.className = "show";
-      });
+      editName(uid, username, newName)
+        .then(() => {
+          turnOffSafety();
+          nameFormLoader.className = "hide";
+          nameFormConfirmMsg.className = "show";
+        })
+        .catch(console.warn);
     }
     return false;
   });
@@ -418,8 +425,8 @@ async function renderEditor(uid: string, username: string, name: string) {
     formOverlay.className = "show";
     formOverlay.innerHTML = loaderHTML;
     turnOnSafety();
-    createNewList(uid, username, title, items, numbered, order).then(
-      (newList) => {
+    createNewList(uid, username, title, items, numbered, order)
+      .then((newList) => {
         turnOffSafety();
         addList(newList);
         totalCount += 1;
@@ -432,8 +439,8 @@ async function renderEditor(uid: string, username: string, name: string) {
         firstInputItem.addEventListener("input", watchInput);
         formOverlay.className = "hide";
         formOverlay.innerHTML = "";
-      }
-    );
+      })
+      .catch(console.warn);
     return false;
   });
 }
@@ -442,7 +449,7 @@ authCallback((user) => {
   if (user) {
     const { uid, id, name } = user;
     if (id && name) {
-      renderEditor(uid, id, name);
+      renderEditor(uid, id, name).catch(console.warn);
       return;
     } else {
       window.location.href = window.location.origin;
